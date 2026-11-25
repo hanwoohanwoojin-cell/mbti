@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>나의 MBTI 성격유형 테스트</title>
+  <!-- Pretendard 웹폰트 (오프라인 환경에서는 기본 시스템 폰트로 자연스럽게 대체됩니다) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 배경 파스텔 장식 요소 -->
+  <div class="bg-decoration" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <main class="app-container">
+    <!-- ==================== 1. 시작 화면 ==================== -->
+    <section id="start-screen" class="screen active" aria-labelledby="main-title">
+      <div class="card start-card">
+        <div class="emblem" aria-hidden="true">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="64" height="64" rx="20" fill="url(#emblemGrad)" />
+            <circle cx="24" cy="25" r="7" fill="#FFFFFF" fill-opacity="0.92" />
+            <circle cx="40" cy="25" r="7" fill="#FFE29A" fill-opacity="0.95" />
+            <path d="M18 42C21.5 36.5 27.5 34.5 32 34.5C36.5 34.5 42.5 36.5 46 42" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+            <defs>
+              <linearGradient id="emblemGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#8F7FF7" />
+                <stop offset="1" stop-color="#6AC6C1" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <span class="pill-badge">48문항 · 4가지 성격 지표 분석</span>
+        <h1 id="main-title" class="main-title">나의 MBTI 성격유형 테스트</h1>
+        <p class="intro-text">
+          일상생활, 친구 관계, 문제 해결, 여행 계획 등 48가지 친숙한 상황을 통해<br class="pc-only" />
+          나만의 성향과 16가지 MBTI 성격유형을 알아보세요.
+        </p>
+
+        <div class="dimension-preview" aria-label="검사 지표 안내">
+          <div class="dim-chip chip-ei">
+            <span class="dim-code">E / I</span>
+            <span class="dim-name">에너지 방향</span>
+          </div>
+          <div class="dim-chip chip-sn">
+            <span class="dim-code">S / N</span>
+            <span class="dim-name">인식 방식</span>
+          </div>
+          <div class="dim-chip chip-tf">
+            <span class="dim-code">T / F</span>
+            <span class="dim-name">판단 기준</span>
+          </div>
+          <div class="dim-chip chip-jp">
+            <span class="dim-code">J / P</span>
+            <span class="dim-name">생활 양식</span>
+          </div>
+        </div>
+
+        <button id="start-btn" class="btn btn-primary btn-large" type="button">
+          <span>테스트 시작하기</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <p class="start-note">
+          정답은 없으니 평소 나의 모습에 더 가까운 선택지를 편하게 골라주세요.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== 2. 테스트 진행 화면 ==================== -->
+    <section id="quiz-screen" class="screen" aria-label="MBTI 질문 진행">
+      <div class="card quiz-card">
+        <!-- 상단 진행률 영역 -->
+        <header class="quiz-header">
+          <div class="progress-meta">
+            <span id="dimension-badge" class="dimension-badge">에너지 방향 · E / I</span>
+            <span id="progress-text" class="progress-text">1 / 48</span>
+          </div>
+          <div class="progress-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="48" aria-valuenow="1" id="progress-track">
+            <div id="progress-fill" class="progress-bar-fill"></div>
+          </div>
+        </header>
+
+        <!-- 질문 및 선택지 영역 (애니메이션 대상) -->
+        <div id="question-stage" class="question-stage">
+          <p id="question-number" class="question-number">Q1</p>
+          <h2 id="question-text" class="question-text">질문이 여기에 표시됩니다.</h2>
+
+          <div class="choices-container" role="group" aria-label="질문 선택지">
+            <button id="choice-a" class="choice-btn" type="button">
+              <span class="choice-label">A</span>
+              <span id="choice-a-text" class="choice-text">선택지 A</span>
+            </button>
+            <button id="choice-b" class="choice-btn" type="button">
+              <span class="choice-label">B</span>
+              <span id="choice-b-text" class="choice-text">선택지 B</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 하단 네비게이션 버튼 -->
+        <footer class="quiz-footer">
+          <button id="prev-btn" class="btn btn-ghost" type="button" disabled>
+            <span aria-hidden="true">←</span>
+            <span>이전 질문</span>
+          </button>
+          <span id="selection-hint" class="selection-hint">선택지를 고르면 다음 질문으로 이동해요</span>
+          <button id="next-btn" class="btn btn-secondary" type="button" disabled>
+            <span id="next-btn-label">다음 질문</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </footer>
+      </div>
+    </section>
+
+    <!-- ==================== 3. 결과 화면 ==================== -->
+    <section id="result-screen" class="screen" aria-labelledby="result-type-code">
+      <!-- 상단 요약 결과 카드 -->
+      <div class="card result-hero-card">
+        <span class="result-subtitle">나의 MBTI 성격유형은</span>
+        <h2 id="result-type-code" class="result-type-code">ENFP</h2>
+        <p id="result-type-name" class="result-type-name">재기발랄한 활동가</p>
+        <div id="result-tags" class="result-tags" aria-label="성격 핵심 키워드"></div>
+        <p id="result-summary" class="result-summary"></p>
+
+        <div class="result-actions">
+          <button id="copy-result-btn" class="btn btn-primary" type="button">
+            <span>결과 복사하기</span>
+          </button>
+          <button id="restart-btn" class="btn btn-outline" type="button">
+            <span>다시 테스트하기</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4가지 지표 점수 그래프 카드 -->
+      <div class="card score-card">
+        <h3 class="section-heading">나의 4가지 지표 분석</h3>
+        <div id="score-bars" class="score-bars"></div>
+      </div>
+
+      <!-- 상세 특징 4종 카드 -->
+      <div class="detail-grid">
+        <article class="card detail-card detail-strengths">
+          <div class="detail-header">
+            <span class="detail-icon" aria-hidden="true">✨</span>
+            <h3>강점</h3>
+          </div>
+          <ul id="result-strengths" class="detail-list"></ul>
+        </article>
+
+        <article class="card detail-card detail-cautions">
+          <div class="detail-header">
+            <span class="detail-icon" aria-hidden="true">💡</span>
+            <h3>주의할 점</h3>
+          </div>
+          <ul id="result-cautions" class="detail-list"></ul>
+        </article>
+
+        <article class="card detail-card detail-relationships">
+          <div class="detail-header">
+            <span class="detail-icon" aria-hidden="true">🤝</span>
+            <h3>대인관계 특징</h3>
+          </div>
+          <p id="result-relationships" class="detail-paragraph"></p>
+        </article>
+
+        <article class="card detail-card detail-work">
+          <div class="detail-header">
+            <span class="detail-icon" aria-hidden="true">📚</span>
+            <h3>공부 및 업무 스타일</h3>
+          </div>
+          <p id="result-work" class="detail-paragraph"></p>
+        </article>
+      </div>
+
+      <!-- 안내 문구 (면책 조항) -->
+      <div class="card disclaimer-card" role="note">
+        <p>
+          <strong>안내 말씀:</strong> MBTI 성격유형 테스트는 자신의 성향을 가볍게 돌아보고 타인을 이해하는 데 도움을 주는 참고 도구입니다.
+          사람의 성격은 환경과 경험에 따라 다양하고 유연하게 변화하므로, 이 결과를 절대적이거나 과학적인 심리 진단으로 받아들이기보다는
+          재미있는 자기 이해의 출발점으로 활용해 주세요.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 복사 완료 알림 토스트 -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    결과가 클립보드에 복사되었습니다!
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
